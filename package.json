@@ -16,7 +16,7 @@
     "expect": "^22.4.3"
   },
   "scripts": {
-    "test": "npm test",
+    "create-webhook": "node scripts/create-webhook.js",
     "zip": "zip -X -r ../box-webhook-to-sendgrid.zip *",
     "deploy": "aws lambda update-function-code --function-name box-webhook-to-sendgrid --zip-file fileb://../box-webhook-to-sendgrid.zip"
   },

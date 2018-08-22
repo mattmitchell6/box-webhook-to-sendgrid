@@ -1,9 +1,16 @@
 const sgMail = require('@sendgrid/mail');
 const BoxSDK = require('box-node-sdk');
 const dateFormat = require('dateformat');
-const BoxConfig = require('config').boxAppSettings;
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const BoxConfig = require('config').boxAppSettings;
+const SendgridApiKey = require('config').sendgridApiKey
+// Plug in your own email. note: these email might land in your spam folder
+const targetEmail ='mmitchell+demo@box.com';
+
+// configure Sendgrid API client
+sgMail.setApiKey(SendgridApiKey);
+
+// instatiate Box SDK object / API client
 const BoxSdk = new BoxSDK({
 	clientID: BoxConfig.clientID,
 	clientSecret: BoxConfig.clientSecret,
@@ -15,6 +22,7 @@ const BoxSdk = new BoxSDK({
 });
 const client = BoxSdk.getAppAuthClient('enterprise', BoxConfig.enterpriseID);
 
+// Catch Box Webhook, handle event
 exports.handler = (event, context, callback) => {
   let webhookEvent = JSON.parse(event.body);
   console.log("Received upload event from Box!");
@@ -34,7 +42,7 @@ async function processMessage(webhookEvent) {
 
     A new document, <strong>${webhookEvent.source.name}</strong>,
     has been shared with you!<br> Preview the document <a href='${link.shared_link.url}'>here</a>
-    or access the it in the <a href='https://box-platform-standard.herokuapp.com/'>Westpac Portal</a><br><br>
+    or access the it in our <a href='https://box-platform-standard.herokuapp.com/'>customer portal</a><br><br>
 
     Lorem ipsum dolor sit amet, justo dictum duis phasellus sodales non eget,
     donec tincidunt nunc erat sit dui ullamcorper, dictum volutpat vivamus, nulla
@@ -44,11 +52,11 @@ async function processMessage(webhookEvent) {
     felis lorem purus aliquam.<br><br>
 
     Thank you<br><br>
-    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Westpac_logo.svg/2000px-Westpac_logo.svg.png' height='42'>
+    <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Acme_Markets_lolo.svg/2000px-Acme_Markets_lolo.svg.png' height='42'>
     </body>`;
 
   let msg = {
-    to: 'mmitchell+westpac@box.com',
+    to: targetEmail,
     from: 'sendgrid@test.com',
     subject: 'New Document(s) Available - ' + now,
     html: html,
