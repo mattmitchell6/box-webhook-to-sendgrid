@@ -1,0 +1,25 @@
+{
+  "name": "box-webhook-to-sendgrid",
+  "version": "1.0.0",
+  "description": "handle box webhook and send email via sendgrid api",
+  "main": "index.js",
+  "dependencies": {
+    "@sendgrid/mail": "^6.3.1",
+    "box-node-sdk": "^1.19.0",
+    "config": "^2.0.1",
+    "dateformat": "^3.0.3",
+    "dotenv": "^6.0.0",
+    "fs": "^0.0.1-security",
+    "moment": "^2.22.1"
+  },
+  "devDependencies": {
+    "expect": "^22.4.3"
+  },
+  "scripts": {
+    "test": "npm test",
+    "zip": "zip -X -r ../box-webhook-to-sendgrid.zip *",
+    "deploy": "aws lambda update-function-code --function-name box-webhook-to-sendgrid --zip-file fileb://../box-webhook-to-sendgrid.zip"
+  },
+  "author": "Matt Mitchell",
+  "license": "ISC"
+}
